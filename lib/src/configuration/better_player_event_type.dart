@@ -4,6 +4,7 @@ enum BetterPlayerEventType {
   play,
   pause,
   seekTo,
+  skipForward,
   openFullscreen,
   hideFullscreen,
   setVolume,

@@ -620,6 +620,32 @@ class BetterPlayerController {
     }
   }
 
+  ///Move player to specific position/moment of the video.
+  Future<void> skipForward(Duration moment) async {
+    if (videoPlayerController == null) {
+      throw StateError('The data source has not been initialized');
+    }
+    if (videoPlayerController?.value.duration == null) {
+      throw StateError('The video has not been initialized yet.');
+    }
+
+    await videoPlayerController!.seekTo(moment);
+
+    _postEvent(
+      BetterPlayerEvent(BetterPlayerEventType.skipForward, parameters: <String, dynamic>{_durationParameter: moment}),
+    );
+
+    final Duration? currentDuration = videoPlayerController!.value.duration;
+    if (currentDuration == null) {
+      return;
+    }
+    if (moment > currentDuration) {
+      _postEvent(BetterPlayerEvent(BetterPlayerEventType.finished));
+    } else {
+      cancelNextVideoTimer();
+    }
+  }
+
   ///Set volume of player. Allows values from 0.0 to 1.0.
   Future<void> setVolume(double volume) async {
     if (volume < 0.0 || volume > 1.0) {

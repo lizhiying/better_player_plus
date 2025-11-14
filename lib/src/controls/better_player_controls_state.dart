@@ -49,7 +49,7 @@ abstract class BetterPlayerControlsState<T extends StatefulWidget> extends State
           (latestValue!.position +
                   Duration(milliseconds: betterPlayerControlsConfiguration.forwardSkipTimeInMilliseconds))
               .inMilliseconds;
-      betterPlayerController!.seekTo(Duration(milliseconds: min(skip, end)));
+      betterPlayerController!.skipForward(Duration(milliseconds: min(skip, end)));
     }
   }
 
