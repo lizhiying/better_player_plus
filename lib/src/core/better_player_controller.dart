@@ -33,6 +33,7 @@ class BetterPlayerController {
   static const String _speedParameter = 'speed';
   static const String _dataSourceParameter = 'dataSource';
   static const String _authorizationHeader = 'Authorization';
+  static const String _oldDurationParameter = 'old_duration';
 
   ///General configuration used in controller instance.
   final BetterPlayerConfiguration betterPlayerConfiguration;
@@ -603,10 +604,12 @@ class BetterPlayerController {
       throw StateError('The video has not been initialized yet.');
     }
 
+    final oldPosition = await videoPlayerController?.position ?? Duration();
+
     await videoPlayerController!.seekTo(moment);
 
     _postEvent(
-      BetterPlayerEvent(BetterPlayerEventType.seekTo, parameters: <String, dynamic>{_durationParameter: moment}),
+      BetterPlayerEvent(BetterPlayerEventType.seekTo, parameters: <String, dynamic>{_durationParameter: moment, _oldDurationParameter:oldPosition}),
     );
 
     final Duration? currentDuration = videoPlayerController!.value.duration;
